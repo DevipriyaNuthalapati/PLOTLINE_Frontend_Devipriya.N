@@ -1,0 +1,37 @@
+import React, { useState } from 'react';
+import styles from './TooltipApp.module.css'; // You can define your CSS styles here
+
+const TooltipApp = () => {
+  const [showTooltip, setShowTooltip] = useState(false);
+
+  const toggleTooltip = () => {
+    setShowTooltip(!showTooltip);
+  };
+
+  const tooltipStyle = {
+    backgroundColor: 'yellow',
+    padding: '8px',
+    borderRadius: '4px',
+    position: 'absolute',
+    top: '100%',
+  };
+
+  const tooltipText = 'This is a tooltip!';
+  const tooltipImage = 'path/to/your/image.png';
+
+  return (
+    <div className={styles.appContainer}>
+      <div className={styles.targetButton} onMouseEnter={toggleTooltip} onMouseLeave={toggleTooltip}>
+        Target Element
+      </div>
+      {showTooltip && (
+        <div className={styles.tooltipContainer} style={tooltipStyle}>
+          {tooltipText}
+          {tooltipImage && <img src={tooltipImage} alt="Tooltip Image" />}
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default TooltipApp;
