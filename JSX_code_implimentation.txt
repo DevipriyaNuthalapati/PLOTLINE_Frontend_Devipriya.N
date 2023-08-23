@@ -1,37 +1,75 @@
 import React, { useState } from 'react';
-import styles from './TooltipApp.module.css'; // You can define your CSS styles here
+import styles from '../styles/Home.module.css';
 
-const TooltipApp = () => {
-  const [showTooltip, setShowTooltip] = useState(false);
-
-  const toggleTooltip = () => {
-    setShowTooltip(!showTooltip);
-  };
-
+const Tooltip = ({ position, style, text, image }) => {
   const tooltipStyle = {
-    backgroundColor: 'yellow',
-    padding: '8px',
-    borderRadius: '4px',
+    ...style,
     position: 'absolute',
-    top: '100%',
+    [position]: 'calc(100% + 8px)',
   };
-
-  const tooltipText = 'This is a tooltip!';
-  const tooltipImage = 'path/to/your/image.png';
 
   return (
-    <div className={styles.appContainer}>
-      <div className={styles.targetButton} onMouseEnter={toggleTooltip} onMouseLeave={toggleTooltip}>
-        Target Element
-      </div>
-      {showTooltip && (
-        <div className={styles.tooltipContainer} style={tooltipStyle}>
-          {tooltipText}
-          {tooltipImage && <img src={tooltipImage} alt="Tooltip Image" />}
-        </div>
-      )}
+    <div className={styles.tooltip} style={tooltipStyle}>
+      {text}
+      {image && <img src={image} alt="Tooltip Image" />}
     </div>
   );
 };
 
-export default TooltipApp;
+const Home = () => {
+  const [tooltipProps, setTooltipProps] = useState({
+    position: 'top',
+    style: { backgroundColor: 'yellow', padding: '8px', borderRadius: '4px' },
+    text: 'This is a tooltip!',
+    image: '',
+  });
+
+  const handleTooltipChange = (property, value) => {
+    setTooltipProps((prevProps) => ({
+      ...prevProps,
+      [property]: value,
+    }));
+  };
+
+  return (
+    <div className={styles.container}>
+      <div className={styles.controls}>
+        <label>
+          Position:
+          <select
+            value={tooltipProps.position}
+            onChange={(e) => handleTooltipChange('position', e.target.value)}
+          >
+            <option value="top">Top</option>
+            <option value="right">Right</option>
+            <option value="bottom">Bottom</option>
+            <option value="left">Left</option>
+          </select>
+        </label>
+        <label>
+          Text:
+          <input
+            type="text"
+            value={tooltipProps.text}
+            onChange={(e) => handleTooltipChange('text', e.target.value)}
+          />
+        </label>
+        <label>
+          Image URL:
+          <input
+            type="text"
+            value={tooltipProps.image}
+            onChange={(e) => handleTooltipChange('image', e.target.value)}
+          />
+        </label>
+      </div>
+      <div className={styles.targetButton} onMouseEnter={() => handleTooltipChange('show', true)} onMouseLeave={() => handleTooltipChange('show', false)}>
+        Target Element
+      </div>
+      {tooltipProps.show && <Tooltip {...tooltipProps} />}
+    </div>
+  );
+};
+
+export default Home;
+
