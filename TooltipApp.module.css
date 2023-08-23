@@ -1,5 +1,6 @@
-.appContainer {
+.container {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 100vh;
@@ -13,11 +14,17 @@
   cursor: pointer;
 }
 
-.tooltipContainer {
+.tooltip {
   background-color: #ffffff;
   border: 1px solid #cccccc;
   padding: 8px;
   border-radius: 4px;
-  margin-top: 8px;
   position: absolute;
 }
+
+.controls {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
